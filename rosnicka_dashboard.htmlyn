@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Rosnička Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      background: #1e1e2f;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .weather-box {
+      background: #2e2e3f;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌦️ Rosnička Dashboard</h1>
+  <div class="weather-box">
+    <p id="location">Načítám lokalitu...</p>
+    <p id="temperature">Teplota: -- °C</p>
+    <p id="description">Popis: --</p>
+  </div>
+
+  <script>
+    const apiKey = "TVŮJ_API_KLÍČ"; // ← ZDE vlož svůj klíč
+    const city = "Drozdov"; // nebo jiné město
+
+    async function loadWeather() {
+      try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=cz`);
+        const data = await response.json();
+        document.getElementById("location").innerText = `📍 ${data.name}`;
+        document.getElementById("temperature").innerText = `🌡️ Teplota: ${data.main.temp} °C`;
+        document.getElementById("description").innerText = `📝 ${data.weather[0].description}`;
+      } catch (error) {
+        document.getElementById("location").innerText = "Chyba při načítání dat.";
+        console.error("Chyba:", error);
+      }
+    }
+
+    loadWeather();
+  </script>
+</body>
+</html>
